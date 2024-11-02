@@ -2,34 +2,16 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
+
+	"example.com/bank/fileops"
 )
 
 const accountBalanceFile = "balance.txt"
 
-func getBalancefromFile() float64 {
-
-	balance, err := os.ReadFile(accountBalanceFile)
-	if err != nil {
-		return 0.0
-	}
-
-	accountBalance, _ := strconv.ParseFloat(string(balance), 64)
-	return accountBalance
-}
-func writeToFile(accountBalance float64) {
-	os.WriteFile(accountBalanceFile, []byte(fmt.Sprintf("%.2f", accountBalance)), 0666)
-}
 func main() {
-	accountBalance := getBalancefromFile()
+	accountBalance := fileops.GetFloatFromFile(accountBalanceFile)
 	for {
-		fmt.Println("Welcome to the bank!")
-		fmt.Println("What do you want to do?")
-		fmt.Println("1. Check your balance: ")
-		fmt.Println("2. Deposit: ")
-		fmt.Println("3. Withdraw: ")
-		fmt.Println("4. Exit: ")
+		presentOptions()
 
 		var choice int
 		fmt.Scan(&choice)
@@ -71,7 +53,7 @@ func main() {
 			fmt.Println("Thank you for Banking with us. Goodbye!")
 			return
 		}
-		writeToFile(accountBalance)
+		fileops.WriteToFile(accountBalance, accountBalanceFile)
 	}
 	// if wantsCheckBalance {
 	// 	fmt.Println("Your balance is: ", accountBalance)
